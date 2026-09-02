@@ -180,7 +180,7 @@ body {
     width: 100%;
 }
 
-/* Primary KPI Hero Grid (총 이용건수 & 운영 대여소 수) */
+/* Primary KPI Hero Grid */
 .kpi-hero-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);

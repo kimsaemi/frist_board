@@ -58,9 +58,9 @@ function renderFallbackState() {
     renderTopStationsFromArray(FALLBACK_STATS.topStations);
 }
 
-// Load & Parse CSV Data dynamically
+// Load & Parse CSV Data dynamically from root relative path
 function loadCSVData() {
-    const csvPath = '../05주차_데이터셋/data/bike_station_hourly.csv';
+    const csvPath = '05주차_데이터셋/data/bike_station_hourly.csv';
 
     Papa.parse(csvPath, {
         download: true,
