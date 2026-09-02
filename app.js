@@ -2,7 +2,7 @@
 let rawData = [];
 let hourlyChartInstance = null;
 let topStationsChartInstance = null;
-let allStationsList = []; // Array of { id, name, rides }
+let allStationsList = []; // Array of { name, rides }
 
 // Initial Pre-computed Benchmark Metrics for Instant Rendering
 const FALLBACK_STATS = {
@@ -60,13 +60,22 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggle.addEventListener('click', toggleTheme);
 });
 
-// Populate Dropdown for Fallback Top Stations
+// Populate Dropdown for Fallback Stations (Top 10 by rides, 11th+ by Korean Alphabetical order)
 function populateFallbackStationDropdown() {
     stationSelect.innerHTML = `<option value="ALL">전체 대여소 (2,794개)</option>`;
-    FALLBACK_STATS.topStations.forEach(([stName, rides]) => {
+    
+    // Top 10 by usage count
+    const top10 = FALLBACK_STATS.topStations.slice(0, 10);
+    // 11th+ sorted alphabetically (가나다순)
+    const others = FALLBACK_STATS.topStations.slice(10).sort((a, b) => a[0].localeCompare(b[0], 'ko'));
+    
+    const sortedList = [...top10, ...others];
+
+    sortedList.forEach(([stName, rides], idx) => {
         const option = document.createElement('option');
         option.value = stName;
-        option.textContent = `[TOP] ${stName} (${rides.toLocaleString()}건)`;
+        const prefix = idx < 10 ? `[TOP ${idx + 1}] ` : '';
+        option.textContent = `${prefix}${stName} (${rides.toLocaleString()}건)`;
         stationSelect.appendChild(option);
     });
 }
@@ -99,7 +108,7 @@ function loadCSVData() {
                 rawData = results.data;
                 dataStatusBadge.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#10b981;"></i> 데이터 파싱 완료 (${rawData.length.toLocaleString()} 행)`;
                 
-                // Build full unique station list for dropdown
+                // Build full unique station list for dropdown (Top 10 rides + Korean Alphabetical for 11th+)
                 buildStationDropdownFromCSV();
                 updateDashboard();
             }
@@ -111,7 +120,9 @@ function loadCSVData() {
     });
 }
 
-// Build Station Dropdown Options from Parsed CSV
+// Build Station Dropdown Options from Parsed CSV:
+// 1. TOP 1 ~ TOP 10: Usage count descending
+// 2. TOP 11+: Alphabetical order (가나다순)
 function buildStationDropdownFromCSV() {
     const stationMap = {};
 
@@ -128,15 +139,24 @@ function buildStationDropdownFromCSV() {
         }
     });
 
-    // Sort stations by total rides descending
-    allStationsList = Object.values(stationMap).sort((a, b) => b.rides - a.rides);
+    // 1. Sort all by rides descending
+    const sortedByRides = Object.values(stationMap).sort((a, b) => b.rides - a.rides);
+
+    // 2. Extract TOP 10
+    const top10 = sortedByRides.slice(0, 10);
+
+    // 3. Extract 11th+ and sort alphabetically (가나다순)
+    const others = sortedByRides.slice(10).sort((a, b) => a.name.localeCompare(b.name, 'ko'));
+
+    // 4. Combine
+    allStationsList = [...top10, ...others];
 
     stationSelect.innerHTML = `<option value="ALL">전체 대여소 (${allStationsList.length.toLocaleString()}개)</option>`;
     
     allStationsList.forEach((st, idx) => {
         const option = document.createElement('option');
         option.value = st.name;
-        const prefix = idx < 10 ? `[TOP ${idx+1}] ` : '';
+        const prefix = idx < 10 ? `[TOP ${idx + 1}] ` : '';
         option.textContent = `${prefix}${st.name} (${st.rides.toLocaleString()}건)`;
         stationSelect.appendChild(option);
     });
@@ -148,7 +168,6 @@ function updateDashboard() {
     const selectedStation = stationSelect.value;
 
     if (!rawData || rawData.length === 0) {
-        // Fallback filtering if rawData not loaded yet
         if (selectedStation !== 'ALL') {
             const target = FALLBACK_STATS.topStations.find(item => item[0] === selectedStation);
             const rides = target ? target[1] : 50000;
