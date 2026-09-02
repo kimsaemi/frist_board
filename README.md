@@ -21,15 +21,25 @@
 
 ---
 
-## 🚀 GitHub Pages 웹호스팅 적용 방법
+## 🌐 대시보드 웹호스팅 실습 (Web Hosting Practice)
 
-GitHub Pages를 통해 본 대시보드를 웹사이트로 즉시 배포할 수 있습니다:
+본 실습은 GitHub Pages를 활용하여 데이터 시각화 대시보드를 실제 웹사이트로 무료 호스팅(배포)해보는 실습 과정입니다.
 
-1. 현재 GitHub 저장소([https://github.com/kimsaemi/first_](https://github.com/kimsaemi/first_)) 상단 메뉴에서 **[Settings]** 클릭
-2. 좌측 메뉴에서 **[Pages]** 선택
+### 🌐 배포 완료 후 웹사이트 접속 주소
+* 🚲 **따릉이 지도 대시보드 (메인)**: [https://kimsaemi.github.io/first_/](https://kimsaemi.github.io/first_/)
+* 🏠 **3040 주거후보지역 리포트**: [https://kimsaemi.github.io/first_/서울시_3040_실수요자_주거후보지역_종합분석리포트.html](https://kimsaemi.github.io/first_/서울시_3040_실수요자_주거후보지역_종합분석리포트.html)
+
+---
+
+## 🚀 GitHub Pages 웹호스팅 실습 단계 (적용 방법)
+
+본 대시보드를 웹사이트로 즉시 배포하려면 아래 순서대로 적용해주세요:
+
+1. 현재 GitHub 저장소([https://github.com/kimsaemi/first_](https://github.com/kimsaemi/first_)) 상단 메뉴에서 **[Settings]** ⚙️ 클릭
+2. 좌측 사이드바 메뉴에서 **[Pages]** 선택
 3. **Build and deployment** 섹션의 Source를 **`Deploy from a branch`**로 설정
 4. Branch를 **`main` / `/ (root)`** 로 선택 후 **[Save]** 클릭
-5. 1~2분 후 제공되는 웹 URL(예: `https://kimsaemi.github.io/first_/`)을 통해 브라우저에서 대시보드 접속 가능!
+5. 1~2분 후 제공되는 웹 URL(`https://kimsaemi.github.io/first_/`)을 통해 브라우저에서 대시보드 접속 확인!
 
 ---
 
