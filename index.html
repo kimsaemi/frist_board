@@ -48,9 +48,12 @@
                     <option value="주말">주말만 보기</option>
                 </select>
             </div>
-            <div class="filter-group search-group">
-                <label for="station-search"><i class="fa-solid fa-magnifying-glass"></i> 대여소 검색:</label>
-                <input type="text" id="station-search" placeholder="대여소명 또는 번호 입력 (예: 망원역)">
+            <div class="filter-group select-group">
+                <label for="station-select"><i class="fa-solid fa-location-dot"></i> 대여소 선택:</label>
+                <select id="station-select">
+                    <option value="ALL">전체 대여소 (2,794개)</option>
+                    <!-- Dynamically populated from CSV / benchmark dataset -->
+                </select>
             </div>
         </section>
 

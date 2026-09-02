@@ -150,34 +150,33 @@ body {
     font-weight: 500;
 }
 
-.filter-group select,
-.filter-group input {
-    background: rgba(0, 0, 0, 0.2);
+.filter-group select {
+    background: rgba(15, 23, 42, 0.8);
     border: 1px solid var(--border-color);
     color: var(--text-primary);
-    padding: 0.6rem 1rem;
+    padding: 0.65rem 1.2rem;
     border-radius: var(--radius-sm);
     font-size: 0.95rem;
     outline: none;
+    cursor: pointer;
 }
 
-[data-theme="light"] .filter-group select,
-[data-theme="light"] .filter-group input {
+[data-theme="light"] .filter-group select {
     background: #ffffff;
 }
 
-.filter-group select:focus,
-.filter-group input:focus {
+.filter-group select:focus {
     border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
 }
 
-.search-group {
+.select-group {
     flex-grow: 1;
 }
 
-.search-group input {
+.select-group select {
     width: 100%;
+    max-width: 500px;
 }
 
 /* Primary KPI Hero Grid */
