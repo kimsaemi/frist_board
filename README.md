@@ -25,11 +25,11 @@
 
 GitHub Pages를 통해 본 대시보드를 웹사이트로 즉시 배포할 수 있습니다:
 
-1. 현재 GitHub 저장소([https://github.com/kimsaemi/frist_board](https://github.com/kimsaemi/frist_board)) 상단 메뉴에서 **[Settings]** 클릭
+1. 현재 GitHub 저장소([https://github.com/kimsaemi/first_](https://github.com/kimsaemi/first_)) 상단 메뉴에서 **[Settings]** 클릭
 2. 좌측 메뉴에서 **[Pages]** 선택
 3. **Build and deployment** 섹션의 Source를 **`Deploy from a branch`**로 설정
 4. Branch를 **`main` / `/ (root)`** 로 선택 후 **[Save]** 클릭
-5. 1~2분 후 제공되는 웹 URL(예: `https://kimsaemi.github.io/frist_board/`)을 통해 브라우저에서 대시보드 접속 가능!
+5. 1~2분 후 제공되는 웹 URL(예: `https://kimsaemi.github.io/first_/`)을 통해 브라우저에서 대시보드 접속 가능!
 
 ---
 
