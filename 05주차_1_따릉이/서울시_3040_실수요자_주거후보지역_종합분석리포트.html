@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>실제 출퇴근 데이터와 가격 방어력으로 찾은 30~40대 예산별 서울 최적 아파트 주거지 분석 리포트</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+  @page {
+    size: A4 portrait;
+    margin: 8mm 10mm;
+  }
+
+  * {
+    box-sizing: border-box;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Malgun Gothic', sans-serif;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    color: #1e293b;
+    background-color: #ffffff;
+    font-size: 10px;
+    line-height: 1.45;
+  }
+
+  .page {
+    width: 100%;
+    page-break-after: always;
+  }
+  .page:last-child {
+    page-break-after: avoid;
+  }
+
+  /* Header */
+  .header-container {
+    border-bottom: 2px solid #0f172a;
+    padding-bottom: 6px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .title-area h1 {
+    font-size: 15px;
+    font-weight: 800;
+    color: #0f172a;
+    margin: 0 0 3px 0;
+    letter-spacing: -0.5px;
+  }
+  .title-area p {
+    font-size: 10px;
+    color: #64748b;
+    margin: 0;
+    font-weight: 500;
+  }
+  .badge-date {
+    background: #0f172a;
+    color: #ffffff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* Metadata Box */
+  .meta-box {
+    background: #f8fafc;
+    border-left: 4px solid #2563eb;
+    padding: 5px 9px;
+    margin-bottom: 10px;
+    font-size: 9px;
+    color: #334155;
+    border-radius: 0 4px 4px 0;
+  }
+  .meta-box span {
+    font-weight: 700;
+    color: #1e293b;
+  }
+
+  /* Section Titles */
+  .section-title {
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 10px 0 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 3.5px;
+    height: 11px;
+    background: #2563eb;
+    border-radius: 2px;
+  }
+
+  /* Table */
+  table.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-size: 9px;
+  }
+  table.report-table th {
+    background: #f1f5f9;
+    color: #0f172a;
+    font-weight: 700;
+    padding: 5px 6px;
+    border: 1px solid #cbd5e1;
+    text-align: left;
+  }
+  table.report-table td {
+    padding: 5px 6px;
+    border: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  .group-tag {
+    display: inline-block;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 8px;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .tag-g1 { background: #dbeafe; color: #1e40af; }
+  .tag-g2 { background: #dcfce7; color: #166534; }
+  .tag-g3 { background: #fef3c7; color: #92400e; }
+  .tag-g4 { background: #f3e8ff; color: #6b21a8; }
+
+  /* Charts Container */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  .chart-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    padding: 7px 9px;
+    background: #ffffff;
+  }
+  .chart-card h4 {
+    margin: 0 0 5px 0;
+    font-size: 10px;
+    font-weight: 700;
+    color: #334155;
+  }
+
+  /* Visual SVG Charts */
+  .svg-container {
+    width: 100%;
+    height: 110px;
+  }
+
+  /* Cards Grid (Page 2 style) */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 6px;
+  }
+  .action-card {
+    border-radius: 5px;
+    border: 1px solid #e2e8f0;
+    padding: 8px 10px;
+    background: #ffffff;
+    border-top: 3px solid #2563eb;
+  }
+  .action-card.c1 { border-top-color: #2563eb; }
+  .action-card.c2 { border-top-color: #10b981; }
+  .action-card.c3 { border-top-color: #f59e0b; }
+  .action-card.c4 { border-top-color: #8b5cf6; }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+  }
+  .card-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: #0f172a;
+  }
+  .card-sub {
+    font-size: 8.5px;
+    color: #64748b;
+    font-weight: 600;
+  }
+  .card-body p {
+    margin: 2.5px 0;
+    font-size: 8.5px;
+    color: #334155;
+    line-height: 1.4;
+  }
+  .icon-point {
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  /* Decision roadmap */
+  .roadmap-box {
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 5px;
+    padding: 7px 9px;
+    margin-top: 8px;
+  }
+  .roadmap-item {
+    font-size: 9px;
+    margin-bottom: 2.5px;
+    color: #1e293b;
+  }
+  .roadmap-item span {
+    font-weight: 700;
+    color: #2563eb;
+  }
+</style>
+</head>
+<body>
+
+<!-- PAGE 1 -->
+<div class="page">
+  <div class="header-container">
+    <div class="title-area">
+      <h1>📊 실제 출퇴근 데이터와 가격 방어력으로 찾은 30~40대 예산별 서울 최적 아파트 주거지 분석 리포트</h1>
+      <p>생활이동 O-D 통근 실측량 × 금리사이클 가격 흔들림 지수 × 실거래가 융합 분석</p>
+    </div>
+    <div class="badge-date">2026 Q1 최신 데이터</div>
+  </div>
+
+  <div class="meta-box">
+    📌 <span>분석 대상</span>: 서울시 주요 281개 법정동 (가격 흔들림 순위 산출 114개 동 포함) | <span>적용 모델</span>: 2차원 리스크-리턴 군집 분석<br>
+    🔗 <span>융합 데이터셋</span>: 국토부 실거래가(23.5만 건) + 3040 생활이동 통근 O-D + 동네별 가격 흔들림 순위표 + 주간인구 지수 + 따릉이 모빌리티
+  </div>
+
+  <div class="section-title">30~40대 맞춤 4대 주거 세그먼트 종합 비교표</div>
+  <table class="report-table">
+    <thead>
+      <tr>
+        <th style="width: 20%;">그룹명 (세그먼트)</th>
+        <th style="width: 14%;">가격 중앙값</th>
+        <th style="width: 18%;">3대 도심 통근 시간</th>
+        <th style="width: 18%;">가격 흔들림 & 방어력</th>
+        <th style="width: 30%;">3040 실수요 추천 포인트 및 자산 전략</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <span class="group-tag tag-g1">그룹 1</span><br>
+          <strong>가성비 실속 & 철통 방어형</strong><br>
+          <small style="color:#64748b;">봉천, 염창, 가양, 등촌</small>
+        </td>
+        <td><strong>6.0억 ~ 8.3억</strong><br><small style="color:#64748b;">평당 2,500~3,500만</small></td>
+        <td>
+          • YBD 10~15분<br>
+          • GBD 15~25분<br>
+          • CBD 25~30분
+        </td>
+        <td>
+          • 하락기: -21% ~ -29%<br>
+          • 상승기: +15% ~ +17%<br>
+          <span style="color:#2563eb; font-weight:bold;">[보통 / 안정형 방어]</span>
+        </td>
+        <td>
+          • <strong>30대 첫 내 집 마련 및 신혼부부 1순위</strong><br>
+          • 9호선 급행 / 신림선으로 여의도·강남 15~25분 진입<br>
+          • 3040 거주비중 43.3%(서울 1위), 평지 대단지+따릉이
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="group-tag tag-g2">그룹 2</span><br>
+          <strong>광역 허브 & 하락장 방어 1위</strong><br>
+          <small style="color:#64748b;">당산, 사당, 대방, 신도림</small>
+        </td>
+        <td><strong>9.6억 ~ 11.5억</strong><br><small style="color:#64748b;">평당 3,800~4,500만</small></td>
+        <td>
+          • YBD 5~15분<br>
+          • GBD 10~25분<br>
+          • CBD 20분
+        </td>
+        <td>
+          • <strong>사당 -7.1% / 당산 -12.0%</strong><br>
+          • 상승기: +13% ~ +27%<br>
+          <span style="color:#166534; font-weight:bold;">[덜 흔들림 / 방어 1위 🏆]</span>
+        </td>
+        <td>
+          • <strong>맞벌이 부부 직장 방향 다를 때 최적 절충지</strong><br>
+          • 2·9호선/2·4·7호선 환승으로 3대 도심 20분 컷<br>
+          • 하락장 낙폭이 서울 최저 수준으로 자산 방어력 최강
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="group-tag tag-g3">그룹 3</span><br>
+          <strong>사통팔달 쿼드러플 & 성장형</strong><br>
+          <small style="color:#64748b;">공덕, 도화, 문정, 가락</small>
+        </td>
+        <td><strong>12.1억 ~ 15.4억</strong><br><small style="color:#64748b;">평당 4,500~6,000만</small></td>
+        <td>
+          • YBD 5분<br>
+          • CBD 10분<br>
+          • GBD 15~30분
+        </td>
+        <td>
+          • 하락기: -11% ~ -29%<br>
+          • <strong>공덕 +40.9% / 문정 +30.2%</strong><br>
+          <span style="color:#92400e; font-weight:bold;">[많이 흔들림 / 고탄력 🚀]</span>
+        </td>
+        <td>
+          • <strong>직주근접 종결지이자 미래 자산 증식 노리는 타깃</strong><br>
+          • 4개 노선 환승, 마포 명문 학원가 및 대단지 프리미엄<br>
+          • 금리 인하기에 가장 강하게 치고 올라가는 반등 탄력
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <span class="group-tag tag-g4">그룹 4</span><br>
+          <strong>자녀 보육 & 학군 배후 주거지</strong><br>
+          <small style="color:#64748b;">중계, 하계, 명일, 고덕</small>
+        </td>
+        <td><strong>7.5억 ~ 10.5억</strong><br><small style="color:#64748b;">평당 2,600~3,500만</small></td>
+        <td>
+          • CBD 25~35분<br>
+          • GBD 30~40분
+        </td>
+        <td>
+          • 하락기: -22% ~ -44%<br>
+          • 상승기: +5% ~ +48%<br>
+          <span style="color:#6b21a8; font-weight:bold;">[보통 ~ 흔들림 / 학군지지]</span>
+        </td>
+        <td>
+          • <strong>초·중·고 학령기 자녀를 둔 3040 정주형 타깃</strong><br>
+          • 서울 3대 학군(중계 은행사거리, 강동 명일학원가)<br>
+          • 출퇴근 30분 감수 대신 쾌적한 숲세권 및 넓은 평형 확보
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="section-title">2차원 의사결정 매트릭스 (출퇴근 편의성 × 가격 안정성)</div>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h4>📍 출퇴근 접근성 vs 가격 안정성 매트릭스</h4>
+      <svg class="svg-container" viewBox="0 0 300 110">
+        <line x1="30" y1="95" x2="280" y2="95" stroke="#cbd5e1" stroke-width="1"/>
+        <line x1="30" y1="15" x2="30" y2="95" stroke="#cbd5e1" stroke-width="1"/>
+        <text x="30" y="105" font-size="7.5" fill="#64748b">고변동(흔들림)</text>
+        <text x="280" y="105" font-size="7.5" fill="#64748b" text-anchor="end">안정형(덜 흔들림)</text>
+        <text x="25" y="20" font-size="7.5" fill="#64748b" text-anchor="end">출퇴근 빠름</text>
+
+        <!-- Quadrant Boxes -->
+        <rect x="35" y="18" width="115" height="35" fill="#fef3c7" opacity="0.6" rx="3"/>
+        <text x="40" y="32" font-size="8" font-weight="bold" fill="#92400e">그룹 3 (공덕·문정)</text>
+        <text x="40" y="44" font-size="7" fill="#78350f">통근 최상 + 상승기 반등 탄력(+40%)</text>
+
+        <rect x="155" y="18" width="120" height="35" fill="#dcfce7" opacity="0.8" rx="3"/>
+        <text x="160" y="32" font-size="8" font-weight="bold" fill="#166534">★ 그룹 2 (당산·사당) ★</text>
+        <text x="160" y="44" font-size="7" fill="#14532d">통근 최상 + 하락장 방어 1위 (-7~-12%)</text>
+
+        <rect x="155" y="58" width="120" height="35" fill="#dbeafe" opacity="0.8" rx="3"/>
+        <text x="160" y="72" font-size="8" font-weight="bold" fill="#1e40af">그룹 1 (염창·봉천)</text>
+        <text x="160" y="84" font-size="7" fill="#1e3a8a">6~8억 가성비 + 9호선/신림선 실속</text>
+
+        <rect x="35" y="58" width="115" height="35" fill="#f3e8ff" opacity="0.6" rx="3"/>
+        <text x="40" y="72" font-size="8" font-weight="bold" fill="#6b21a8">그룹 4 (중계·고덕)</text>
+        <text x="40" y="84" font-size="7" fill="#581c87">통근 30분대 + 학군/숲세권 특화</text>
+      </svg>
+    </div>
+
+    <div class="chart-card">
+      <h4>🕸️ 군집별 5대 핵심 평가지표 비교 (100점 만점)</h4>
+      <table style="width:100%; font-size:8px; border-collapse:collapse; text-align:center; margin-top:2px;">
+        <tr style="background:#f8fafc; border-bottom:1px solid #e2e8f0; font-weight:bold;">
+          <th style="text-align:left; padding:2px;">지표</th>
+          <th>그룹1</th><th>그룹2</th><th>그룹3</th><th>그룹4</th>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="text-align:left; padding:2px;">광역 통근성 (20분컷)</td>
+          <td>85</td><td style="color:#10b981; font-weight:bold;">98</td><td>95</td><td>70</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="text-align:left; padding:2px;">하락장 가격 방어력</td>
+          <td>88</td><td style="color:#10b981; font-weight:bold;">99</td><td>70</td><td>85</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="text-align:left; padding:2px;">상승기 반등 탄력성</td>
+          <td>75</td><td>85</td><td style="color:#f59e0b; font-weight:bold;">98</td><td>78</td>
+        </tr>
+        <tr style="border-bottom:1px solid #f1f5f9;">
+          <td style="text-align:left; padding:2px;">3040 거주 밀집도</td>
+          <td style="color:#2563eb; font-weight:bold;">96</td><td>88</td><td>85</td><td>82</td>
+        </tr>
+        <tr>
+          <td style="text-align:left; padding:2px;">자녀 보육/학군 인프라</td>
+          <td>78</td><td>82</td><td>90</td><td style="color:#8b5cf6; font-weight:bold;">98</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page">
+  <div class="header-container" style="margin-bottom:6px;">
+    <div class="title-area">
+      <h1>💡 그룹별 상세 특징 및 30~40대 실수요자 액션 가이드</h1>
+    </div>
+    <div class="badge-date">Action Strategy</div>
+  </div>
+
+  <div class="cards-grid">
+    <!-- Card 1 -->
+    <div class="action-card c1">
+      <div class="card-header">
+        <span class="card-title">그룹 1 : 가성비 실속 & 철통 방어형</span>
+        <span class="card-sub">78개 동 (27.8%)</span>
+      </div>
+      <div class="card-body">
+        <p><span class="icon-point">📌 그룹 특징:</span> 평당 2,500만~3,500만 원대의 실속형 시세로 3040 인구 비중(43.3%)이 서울 1위입니다. 9호선 급행(염창·등촌) 및 2호선·신림선(봉천)으로 여의도·강남을 15~25분대에 연결하며 두터운 전월세 수요로 하락장 낙폭이 작습니다.</p>
+        <p><span class="icon-point">🎯 액션 아이디어:</span> 6~8억대 가용 예산의 30대 첫 내 집 마련자에게 최우선 추천합니다. 단지 앞 <strong>따릉이 대여소 + 평지 자전거길</strong>을 활용해 도보 15분 거리 단지를 실질 역세권으로 공략하면 1~2억 원을 절약할 수 있습니다.</p>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="action-card c2">
+      <div class="card-header">
+        <span class="card-title">그룹 2 : 광역 허브 & 하락장 방어 1위</span>
+        <span class="card-sub">62개 동 (22.1%)</span>
+      </div>
+      <div class="card-body">
+        <p><span class="icon-point">📌 그룹 특징:</span> 2·9호선 급행(당산), 2·4·7호선(사당), 1·2호선(신도림) 등 서울 핵심 간선 노선이 교차하는 환승 요충지입니다. 금리 인상기 하락장에서도 낙폭이 <strong>사당 -7.1%, 당산 -12.0%</strong>에 불과해 서울에서 가장 안전한 자산 방어선입니다.</p>
+        <p><span class="icon-point">🎯 액션 아이디어:</span> 9~11억대 예산의 맞벌이 가구 중 <strong>이직 가능성이 높거나 부부 직장이 다른 경우</strong> 최적의 대안입니다. 한강·안양천 수변공원 및 백화점 슬세권 인프라를 갖춰 실거주 만족도가 극대화됩니다.</p>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="action-card c3">
+      <div class="card-header">
+        <span class="card-title">그룹 3 : 사통팔달 쿼드러플 & 탄력 성장형</span>
+        <span class="card-sub">45개 동 (16.0%)</span>
+      </div>
+      <div class="card-body">
+        <p><span class="icon-point">📌 그룹 특징:</span> 4개 지하철 노선이 집중되는 서울 도심 최고 거점(공덕, 문정, 가락 등)입니다. 평당 4,500만~6,000만 원대로 높지만, 금리 인하기에 <strong>공덕 +40.9%, 문정 +30.2%</strong>로 서울에서 가장 폭발적인 반등 탄력을 보였습니다.</p>
+        <p><span class="icon-point">🎯 액션 아이디어:</span> 12~15억대 이상 예산으로 <strong>도심/여의도 5~10분대 초근접 직주근접</strong>과 <strong>명문 학원가(마포 염리동/송파 학원가)</strong>, <strong>장기 자산 증식</strong>을 동시에 노리는 3040 성공형 가구에 최적입니다.</p>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="action-card c4">
+      <div class="card-header">
+        <span class="card-title">그룹 4 : 자녀 보육 & 학군 특화 배후형</span>
+        <span class="card-sub">96개 동 (34.1%)</span>
+      </div>
+      <div class="card-body">
+        <p><span class="icon-point">📌 그룹 특징:</span> 주간인구지수가 70%대로 낮아 낮 시간대가 매우 조용하며, 0~9세 영유아 및 학령기 인구 비중이 서울 최고 수준입니다. 중계동 은행사거리, 강동 고덕/명일동 등 대표적 명문 학군 벨트를 형성하고 있습니다.</p>
+        <p><span class="icon-point">🎯 액션 아이디어:</span> 출퇴근 30~40분을 감수하더라도 <strong>자녀 교육, 넓은 평형, 쾌적한 숲세권 자연환경</strong>을 최우선으로 두는 초등·중등 학부모 가정에 가장 유리합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:10px;">30~40대 실수요자 최종 의사결정 체크포인트</div>
+  <div class="roadmap-box">
+    <div class="roadmap-item">• <span>[예산 6~8억대 / 신혼·첫 집]</span> 9호선 급행 / 한강 평지 ──► <strong>강서구 염창동·등촌동</strong> | 여의도·강남 양방향 ──► <strong>관악구 봉천동 (신림선)</strong></div>
+    <div class="roadmap-item">• <span>[예산 9~11억대 / 맞벌이 부부]</span> 서울 방어력 1위(-10%대) + 3대 도심 20분 컷 ──► <strong>영등포구 당산동 (2·9호선) · 동작구 사당동 (2·4·7호선)</strong></div>
+    <div class="roadmap-item">• <span>[예산 12~15억대 / 자산 성장]</span> 쿼드러플 환승 + 반등 탄력(+40%) ──► <strong>마포구 공덕동·도화동</strong> | 강남·판교 트라이앵글 ──► <strong>송파구 문정동·가락동</strong></div>
+    <div class="roadmap-item">• <span>[학군·자연 최우선 / 자녀 교육]</span> 서울 3대 명문 학원가 / 대형 평형 가성비 ──► <strong>노원구 중계동 (은행사거리) · 강동구 고덕동</strong></div>
+  </div>
+</div>
+
+</body>
+</html>
